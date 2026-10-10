@@ -1,7 +1,7 @@
 El uso del workbench era para usar diagrama, y ver o entender yo el flujo para crear la base,
 ahora, ya creada, voy a escribir la base postgreSQL.
 
-Para ver el .sql de la base ir a -->: [https://github.com/duohnson/credid-backend/wiki/base_de_datos/esquema_postgre.sql](https://github.com/duohnson/credid-backend/wiki/base_de_datos/esquema_postgre.sql)
+Para ver el .sql de la base ir a -->: [https://github.com/duohnson/credid-backend/wiki-docs/base_de_datos/esquema_postgre.sql](https://github.com/duohnson/credid-backend/wiki-docs/base_de_datos/esquema_postgre.sql)
 
 BEGIN;
 

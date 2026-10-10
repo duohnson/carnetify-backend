@@ -19,7 +19,7 @@ user_id | tenant_id | rol
 el usuario con id 101 es empleado en la organizacion con id 500
 ),
 
-Para ver la base, su estructura ir a: [https://github.com/duohnson/credid-backend/wiki/base_de_datos/base_comentada.md](https://github.com/duohnson/credid-backend/wiki/base_de_datos/base_comentada.md)
+Para ver la base, su estructura ir a: [https://github.com/duohnson/credid-backend/wiki-docs/base_de_datos/base_comentada.md](https://github.com/duohnson/credid-backend/wiki-docs/base_de_datos/base_comentada.md)
 
 ### Capa global para identidad.
 
