@@ -1,0 +1,30 @@
+{
+  "name": "credid-backend",
+  "version": "1.0.0",
+  "description": "el backend de la aplicación",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/duohnson/credid-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/duohnson/credid-backend/issues"
+  },
+  "homepage": "https://github.com/duohnson/credid-backend#readme",
+  "dependencies": {
+    "dotenv": "^18.0.7",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/pg": "^8.23.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
