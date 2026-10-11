@@ -1,0 +1,8 @@
+curl -i -X POST http://localhost:3006/api/auth/registro \
+-H "Content-Type: application/json" \
+-d '{
+    "nombre": "Daniel",
+    "apellido_1": "Uohnson",
+    "email": "prueba@ejemplo.com",
+    "contrasena": "PruebaSegura123!"
+}'

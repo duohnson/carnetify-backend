@@ -1,0 +1,6 @@
+npx expo install expo-dev-client
+npm install -g eas-cli
+
+npm install helmet express-rate-limit zod argon2
+
+temporal
