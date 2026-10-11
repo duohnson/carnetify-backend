@@ -1,6 +1,6 @@
 Wiki-docs.
 
-Bases de datos: [https://github.com/duohnson/credid-backend/wiki-docs/base_de_datos/README.md](https://github.com/duohnson/credid-backend/wiki-docs-docs/base_de_datos/README.md)
+Bases de datos: [https://github.com/duohnson/carnetify-backend/wiki-docs/base_de_datos/README.md](https://github.com/duohnson/carnetify-backend/wiki-docs-docs/base_de_datos/README.md)
 
 Actual esquema: ![Esquema actual](./base_de_datos/esquema.png)
 

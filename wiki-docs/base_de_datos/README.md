@@ -19,11 +19,11 @@ user_id | tenant_id | rol
 el usuario con id 101 es empleado en la organizacion con id 500
 ),
 
-Para ver la base, su estructura ir a: [https://github.com/duohnson/credid-backend/wiki-docs/base_de_datos/base_comentada.md](https://github.com/duohnson/credid-backend/wiki-docs/base_de_datos/base_comentada.md)
+Para ver la base, su estructura ir a: [https://github.com/duohnson/carnetify-backend/wiki-docs/base_de_datos/base_comentada.md](https://github.com/duohnson/carnetify-backend/wiki-docs/base_de_datos/base_comentada.md)
 
 ### Capa global para identidad.
 
-Un usuario no debe pertenecer a una sola empresa. Si yo trabajo en la Empresa A y voy al Gimnasio B, ambas deberían poder emitirme un carnet de CREDID hacia la misma cuenta y aplicación móvil.
+Un usuario no debe pertenecer a una sola empresa. Si yo trabajo en la Empresa A y voy al Gimnasio B, ambas deberían poder emitirme un carnet de CARNETIFY hacia la misma cuenta y aplicación móvil.
 
 user
 - id (UUIDv7 / no usar ID autoincremental)

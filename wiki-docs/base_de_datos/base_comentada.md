@@ -1,7 +1,7 @@
 El uso del workbench era para usar diagrama, y ver o entender yo el flujo para crear la base,
 ahora, ya creada, voy a escribir la base postgreSQL.
 
-Para ver el .sql de la base ir a -->: [https://github.com/duohnson/credid-backend/wiki-docs/base_de_datos/esquema_postgre.sql](https://github.com/duohnson/credid-backend/wiki-docs/base_de_datos/esquema_postgre.sql)
+Para ver el .sql de la base ir a -->: [https://github.com/duohnson/carnetify-backend/wiki-docs/base_de_datos/esquema_postgre.sql](https://github.com/duohnson/carnetify-backend/wiki-docs/base_de_datos/esquema_postgre.sql)
 
 BEGIN;
 
@@ -36,7 +36,7 @@ BEGIN;
   );
   ```
   
-  - La tabla tenant_principal permite registrar las organizaciones que van a utilizar CREDID, ya sean empresas, universidades, hospitales o gimnasios. Cada una tendrá su propio id UUID, que será su identificador único dentro de la base; PRIMARY KEY obliga a que ese id no se repita y tampoco sea NULL.
+  - La tabla tenant_principal permite registrar las organizaciones que van a utilizar CARNETIFY, ya sean empresas, universidades, hospitales o gimnasios. Cada una tendrá su propio id UUID, que será su identificador único dentro de la base; PRIMARY KEY obliga a que ese id no se repita y tampoco sea NULL.
   
   - Los campos que tienen NOT NULL son obligatorios, aunque esto no impide por sí solo que alguien envíe un texto vacío. La cedula_juridica es varchar(64) porque no todos los países utilizan únicamente números para identificar sus organizaciones; direccion y telefono son opcionales porque no tienen NOT NULL. tipo_organizacion permite identificar qué clase de institución estamos registrando.
   
@@ -54,7 +54,7 @@ BEGIN;
   );
   ```
   
-  - La tabla tenant_usuarios relaciona los usuarios con las organizaciones. Aquí es donde permitimos que una persona pueda pertenecer a una universidad, empresa y gimnasio al mismo tiempo, pero manteniendo una sola identidad global dentro de CREDID.
+  - La tabla tenant_usuarios relaciona los usuarios con las organizaciones. Aquí es donde permitimos que una persona pueda pertenecer a una universidad, empresa y gimnasio al mismo tiempo, pero manteniendo una sola identidad global dentro de CARNETIFY.
   
   - REFERENCES --> Permite declarar una FOREIGN KEY, o clave foránea, que obliga a que el identificador exista en la tabla relacionada. user_id apunta al id de usuarios, mientras que tenant_id apunta al id de tenant_principal. Esto no crea ni copia los usuarios automáticamente, solamente establece una relación entre registros que ya existen.
   
@@ -120,7 +120,7 @@ BEGIN;
   
   - La tabla credenciales es donde se registran los carnets que las organizaciones emiten a los usuarios. Aquí se relacionan tres elementos importantes: el usuario que recibe el carnet, la organización que lo emite y la configuración que se utilizó para crearlo.
   
-  - id uuid PRIMARY KEY --> Identifica de forma única cada credencial. No es lo mismo que el id del usuario, porque una misma persona puede tener diferentes credenciales dentro de CREDID.
+  - id uuid PRIMARY KEY --> Identifica de forma única cada credencial. No es lo mismo que el id del usuario, porque una misma persona puede tener diferentes credenciales dentro de CARNETIFY.
   
   - user_id, tenant_id y carnet_regla_id --> Permiten identificar a quién pertenece el carnet, qué organización lo emitió y qué reglas se utilizaron para crearlo. Aunque declaramos los tres como uuid, las relaciones se establecen realmente mediante las FOREIGN KEY que aparecen más abajo.
   
@@ -138,7 +138,7 @@ BEGIN;
   
   - UNIQUE (tenant_id,id) --> Declara como única la combinación entre organización y credencial, permitiendo que otras tablas puedan verificar mediante FOREIGN KEY que una credencial corresponde a determinada organización.
   
-  - Hay un detalle importante: actualmente validamos que el usuario exista y que la organización exista, pero no que ese usuario esté asociado a esa organización en tenant_usuarios. Si queremos obligar a que exista esa relación antes de emitir un carnet, tendremos que agregar otra FOREIGN KEY compuesta. Esto dependerá de si CREDID permitirá emitir credenciales a usuarios externos sin afiliarlos previamente.
+  - Hay un detalle importante: actualmente validamos que el usuario exista y que la organización exista, pero no que ese usuario esté asociado a esa organización en tenant_usuarios. Si queremos obligar a que exista esa relación antes de emitir un carnet, tendremos que agregar otra FOREIGN KEY compuesta. Esto dependerá de si CARNETIFY permitirá emitir credenciales a usuarios externos sin afiliarlos previamente.
   
   ```
   CREATE INDEX credenciales_usuario_idx ON credenciales(user_id);
@@ -146,7 +146,7 @@ BEGIN;
   CREATE INDEX credenciales_regla_idx ON credenciales(carnet_regla_id);
   ```
   
-  - credenciales_usuario_idx --> Facilita buscar todas las credenciales que pertenecen a una persona. Por ejemplo, cuando inicia sesión en CREDID y necesita visualizar todos sus carnets.
+  - credenciales_usuario_idx --> Facilita buscar todas las credenciales que pertenecen a una persona. Por ejemplo, cuando inicia sesión en CARNETIFY y necesita visualizar todos sus carnets.
   
   - credenciales_tenant_estado_idx --> Es un índice compuesto que utiliza tenant_id y estado. Sirve para facilitar consultas de credenciales de una organización filtradas por estado, por ejemplo buscar todos los carnets activos de una universidad.
   
@@ -200,7 +200,7 @@ BEGIN;
   - escanear_eventos_usuario_idx --> Facilita buscar todos los eventos asociados a un usuario. Esto puede servir para mostrar un historial de escaneos o realizar una auditoría.
   
   ```
-  CREATE FUNCTION credid_set_fecha_actualizacion() RETURNS trigger LANGUAGE plpgsql AS $$
+  CREATE FUNCTION carnetify_set_fecha_actualizacion() RETURNS trigger LANGUAGE plpgsql AS $$
   BEGIN NEW.fecha_actualizacion = now(); RETURN NEW; END; $$;
   ```
   
@@ -221,7 +221,7 @@ BEGIN;
   ```
   DO $$ DECLARE t text; BEGIN
    FOREACH t IN ARRAY ARRAY['usuarios','tenant_principal','tenant_usuarios','carnet_reglas','credenciales'] LOOP
-    EXECUTE format('CREATE TRIGGER %I BEFORE UPDATE ON %I FOR EACH ROW EXECUTE FUNCTION credid_set_fecha_actualizacion()', 'trg_'||t||'_actualizacion', t);
+    EXECUTE format('CREATE TRIGGER %I BEFORE UPDATE ON %I FOR EACH ROW EXECUTE FUNCTION carnetify_set_fecha_actualizacion()', 'trg_'||t||'_actualizacion', t);
    END LOOP;
   END $$;
   ```
@@ -242,7 +242,7 @@ BEGIN;
   
   - FOR EACH ROW --> Indica que el TRIGGER se ejecutará para cada fila que esté siendo modificada. Si actualizamos diez usuarios mediante una consulta, la función se ejecutará para cada uno de esos diez registros.
   
-  - EXECUTE FUNCTION credid_set_fecha_actualizacion() --> Indica que el TRIGGER debe llamar a la función que creamos anteriormente, para modificar automáticamente la fecha de actualización.
+  - EXECUTE FUNCTION carnetify_set_fecha_actualizacion() --> Indica que el TRIGGER debe llamar a la función que creamos anteriormente, para modificar automáticamente la fecha de actualización.
   
   - 'trg_'||t||'_actualizacion' --> Construye el nombre del TRIGGER. El operador || permite concatenar cadenas de texto; por ejemplo, para usuarios se generará trg_usuarios_actualizacion.
   

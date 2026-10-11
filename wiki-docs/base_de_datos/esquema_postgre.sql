@@ -66,11 +66,11 @@ CREATE TABLE escanear_eventos (
 CREATE INDEX escanear_eventos_tenant_fecha_idx ON escanear_eventos(tenant_id,fecha DESC);
 CREATE INDEX escanear_eventos_credencial_idx ON escanear_eventos(credencial_id);
 CREATE INDEX escanear_eventos_usuario_idx ON escanear_eventos(user_id);
-CREATE FUNCTION credid_set_fecha_actualizacion() RETURNS trigger LANGUAGE plpgsql AS $$
+CREATE FUNCTION carnetify_set_fecha_actualizacion() RETURNS trigger LANGUAGE plpgsql AS $$
 BEGIN NEW.fecha_actualizacion = now(); RETURN NEW; END; $$;
 DO $$ DECLARE t text; BEGIN
  FOREACH t IN ARRAY ARRAY['usuarios','tenant_principal','tenant_usuarios','carnet_reglas','credenciales'] LOOP
-  EXECUTE format('CREATE TRIGGER %I BEFORE UPDATE ON %I FOR EACH ROW EXECUTE FUNCTION credid_set_fecha_actualizacion()', 'trg_'||t||'_actualizacion', t);
+  EXECUTE format('CREATE TRIGGER %I BEFORE UPDATE ON %I FOR EACH ROW EXECUTE FUNCTION carnetify_set_fecha_actualizacion()', 'trg_'||t||'_actualizacion', t);
  END LOOP;
 END $$;
 COMMIT;
