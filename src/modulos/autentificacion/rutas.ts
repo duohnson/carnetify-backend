@@ -1,6 +1,7 @@
 // rutas de peticiones http
 import { Router } from 'express';
 import { validarRegistro } from '../../middlewares/validarDatos';
+import { registrarUsuario } from './controlador';
 
 const autentificar = Router();
 
@@ -14,7 +15,7 @@ function autentificarRoute() {
     });
 
     // post para registrar usuarios
-    autentificar.post('/registro', validarRegistro, (req, res) => {
+    autentificar.post('/registro', validarRegistro, registrarUsuario, (req, res) => {
         res.status(501).json({
             mensaje: '[501] se ubica en validarDatos.ts'
         });

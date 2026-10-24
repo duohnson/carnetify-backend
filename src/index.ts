@@ -1,6 +1,6 @@
 import express from 'express';
 import helmet from 'helmet'; // encabezados http seguridad
-import autentificado from './modulos/autentificacion/route';
+import autentificado from './modulos/autentificacion/rutas';
 import manejarErrores from './middlewares/manejarErrores';
 
 const app = express();
