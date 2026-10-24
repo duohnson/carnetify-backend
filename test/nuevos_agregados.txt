@@ -4,3 +4,10 @@ npm install -g eas-cli
 npm install helmet express-rate-limit zod argon2
 
 temporal
+
+permitir argon2:
+pnpm approve-builds
+
+DEJAR DE USAR NPM!!! USAR
+pnpm install
+pnpm run build
