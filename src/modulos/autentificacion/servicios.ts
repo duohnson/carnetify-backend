@@ -3,6 +3,7 @@
 import * as argon2 from 'argon2';
 import { db } from '../ConexionBase';
 import { v7 } from 'uuid';
+// import { string } from 'zod/v3';
 
 interface DatosRegistro {
   nombre: string;
@@ -22,12 +23,15 @@ export async function crearUsuario(datosUsuario: DatosRegistro) {
   const { nombre, email, apellido_1, apellido_2, contrasena } = datosUsuario;
   const contrasenaHash = await argon2.hash(contrasena)
   // se crea una const contrasenaHash que espera el hasheo de la contrasena
+  // libreria argon se encarga del hasheo
 
   const id = v7();
   const resultadoConsulta = await db.query(prepararConsulta, [id, nombre, apellido_1, apellido_2, email, contrasenaHash])
+  // donde const resultadoConsulta es lo mismo que que la query prepararConsulta
   const usuarioCreado = resultadoConsulta.rows[0];
-
+  // rows[0] porq devuelve la ultima fila de la tabla
   return usuarioCreado;
+  // retorna el rows
 
 };
 
@@ -39,3 +43,42 @@ const prepararConsulta = `
   VALUES ($1, $2, $3, $4, $5, $6)
   RETURNING id, email
   `;
+
+interface DatosLogeo {
+  email: string;
+  contrasena: string;
+};
+
+export async function verificarUsuario(datosLogeo: DatosLogeo) {
+  // crear funcion asincrona que, datos logeo sea igual a la interface donde establece q
+  // email y contra son string
+  //
+  const { email, contrasena } = datosLogeo;
+  // const donde los parametros email y contra son los que usara datos logeo
+
+  const prepararConsultaLogin = `
+
+    SELECT id, email, contrasena_hash FROM usuarios WHERE lower(email) = $1
+    `;
+
+  const resultaConsultaLogin = await db.query(prepararConsultaLogin, [email]);
+  // resultaConsultaLogin es lo mismo que la espera a la consulta de la db,
+  // donde prepararConsultaLogin consulta el email
+
+  const usuarioEncontrado = resultaConsultaLogin.rows[0];
+  if (usuarioEncontrado === undefined) {
+    return null;
+    // null representa ausencia de resultado, y return termina la funcion y devuelve ese valor
+  };
+
+  const contraValida = await argon2.verify(usuarioEncontrado.contrasena_hash, contrasena);
+
+  if (contraValida === false) {
+    return null;
+  } else {
+    return {
+      id: usuarioEncontrado.id,
+      email: usuarioEncontrado.email,
+    }
+  }
+};

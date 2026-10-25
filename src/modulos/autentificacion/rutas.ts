@@ -2,6 +2,8 @@
 import { Router } from 'express';
 import { validarRegistro } from '../../middlewares/validarDatos';
 import { registrarUsuario } from './controlador';
+import { validarLogeo } from '../../middlewares/validarDatos';
+import { iniciarSesion } from './controlador';
 
 const autentificar = Router();
 
@@ -15,11 +17,9 @@ function autentificarRoute() {
     });
 
     // post para registrar usuarios
-    autentificar.post('/registro', validarRegistro, registrarUsuario, (req, res) => {
-        res.status(501).json({
-            mensaje: '[501] se ubica en validarDatos.ts'
-        });
-    });
+  autentificar.post('/registro', validarRegistro, registrarUsuario);
+
+  autentificar.post('/sesion', validarLogeo, iniciarSesion);
 
     return autentificar;
 }

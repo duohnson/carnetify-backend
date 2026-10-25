@@ -11,3 +11,13 @@ pnpm approve-builds
 DEJAR DE USAR NPM!!! USAR
 pnpm install
 pnpm run build
+
+--
+
+GRANT USAGE ON SCHEMA public TO usuario_base;
+GRANT INSERT ON TABLE public.usuarios TO usuario_base;
+GRANT SELECT (id, email) ON TABLE public.usuarios TO usuario_base;
+
+GRANT SELECT (contrasena_hash)
+ON TABLE public.usuarios
+TO credid_usuarios;

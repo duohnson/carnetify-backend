@@ -3,6 +3,7 @@
 
 import type { RequestHandler } from 'express';
 import { crearUsuario } from './servicios';
+import { verificarUsuario } from './servicios';
 
 export const registrarUsuario: RequestHandler = async (req, res) => {
   const nombre = req.body.nombre;
@@ -28,5 +29,28 @@ export const registrarUsuario: RequestHandler = async (req, res) => {
     usuario: usuarioCreado
   });
 
+
+};
+
+export const iniciarSesion: RequestHandler = async (req, res) => {
+  const email = req.body.email;
+  const contrasena = req.body.contrasena;
+
+  const datosLogeo = {
+    email,
+    contrasena,
+  };
+
+  const usuarioVerificado = await verificarUsuario(datosLogeo);
+
+  if (usuarioVerificado === null) {
+    res.status(401).json({
+      estado: '[401] Error',
+      mensaje: 'Correo electrónico o contraseña son invalidos, verificar.'
+    });
+  } else res.status(200).json({
+    estado: '[200] Logeo exitoso.',
+    mensaje: 'Inicio sesión correctamente con sus credenciales.'
+  })
 
 };
