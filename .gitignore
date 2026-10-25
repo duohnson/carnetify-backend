@@ -39,3 +39,7 @@ yarn-error.*
 *.tsbuildinfo
 /ios
 /android
+
+#logs
+./logs
+./logs.logs.txt
