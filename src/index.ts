@@ -3,7 +3,6 @@ import helmet from 'helmet'; // encabezados http seguridad
 import autentificado from './modulos/autentificacion/rutas';
 import manejarErrores from './middlewares/manejarErrores';
 import * as fs from 'fs';
-import path from 'path/win32';
 
 const app = express();
 

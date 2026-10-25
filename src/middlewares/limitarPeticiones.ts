@@ -7,3 +7,11 @@ export const limitarLogins = rateLimit({
     mensaje: 'Demasiados intentos de inicio de sesión, intentar más tarde.'
   }
 });
+
+export const limitarRegistros = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 5, message: {
+    estado: '[429] Error',
+    mensaje: 'Demasiados intentos de registro, intentar más tarde.'
+  }
+});

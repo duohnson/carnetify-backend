@@ -4,6 +4,7 @@ import { validarRegistro } from '../../middlewares/validarDatos';
 import { registrarUsuario } from './controlador';
 import { validarLogeo } from '../../middlewares/validarDatos';
 import { iniciarSesion } from './controlador';
+import { limitarLogins, limitarRegistros } from '../../middlewares/limitarPeticiones';
 
 const autentificar = Router();
 
@@ -17,9 +18,10 @@ function autentificarRoute() {
     });
 
     // post para registrar usuarios
-  autentificar.post('/registro', validarRegistro, registrarUsuario);
+  autentificar.post('/registro', limitarRegistros, validarRegistro, registrarUsuario);
+  // limitarLogins en registro es temp, en lo que hago el propio de el
 
-  autentificar.post('/sesion', validarLogeo, iniciarSesion);
+  autentificar.post('/sesion', limitarLogins, validarLogeo, iniciarSesion);
 
     return autentificar;
 }
