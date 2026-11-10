@@ -1,5 +1,7 @@
 # Carnetify 
 
+## PROYECTO ANULADO | CANCELADO, SE DEJA REPOSITORIO COMO EVIDENCIA DE TRABAJO.
+
 ![nodejs](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white)
 ![typescript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
 ![reactnative](https://img.shields.io/badge/React_Native-61DAFB?logo=react&logoColor=black)
